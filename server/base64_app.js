@@ -44,13 +44,14 @@ app.post('/upload', function(req, res) {
   sampleFile.mv('/home/isaranu/base64_img_protocol/html/src/img/uploaded_pic/capture.jpg', function(err) {
     if(err) return console.log(err);
 
-      /* Insert data in mongo */
-      /*
+      /* Insert timestamp of image in mongo */
       var insertimg64_col = imgdata64db.collection('imgdata');
           insertimg64_col.insert({
 
             imgfilename: String(req.files.image.name),
-            data64: req.files.image.data
+            cap_ts: moment(new Date()).format('MMMM Do YYYY, h:mm:ss a'),
+            cap_ts_unix: new Date().getTime()
+            //data64: req.files.image.data
 
           }, function(err){
               if(err) return console.log(err);
@@ -59,11 +60,20 @@ app.post('/upload', function(req, res) {
               res.send('File uploaded !\r');
 
           });
-      */
+
       console.log('File uploaded : ' + moment(new Date()).format('MMMM Do YYYY, h:mm:ss a'));
       res.send('File uploaded !\r');
 
   });
+});
+
+app.get('/getcapturets', function(req, res){
+  var getcapts_col = imgdata64db.collection('imgdata');
+      getcapts_col.find({}).limit(1).sort({cap_ts_unix:-1}, function(err, capts){
+        if(err) return console.log(err);
+        delete capts[0]._id;
+        res.status(200).jsonp({capts:capts[0]});
+      });
 });
 
 app.listen(port, function () {
