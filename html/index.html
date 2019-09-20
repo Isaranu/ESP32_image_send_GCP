@@ -2,23 +2,46 @@
 <html>
 <head>
   <title>Display Image from server</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 </head>
 
 <body>
 
-  <div><img id="cap_img" style="width:300px;"></div>
+  <div align="center">
+    <img id="cap_img" style="width:300px;">
+    <p id="cap_ts_p"></p>
+  </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <script>
     var cap_img = $('#cap_img');
-    cap_img.attr('src', './src/img/uploaded_pic/capture.jpg');
+    var cap_ts_p = $('#cap_ts_p');
+
+    /* First loaded */
+    updateimg();
 
     setInterval(function(){
-      /* Updated image */
-      cap_img.attr('src', './src/img/uploaded_pic/capture.jpg' + '?' + Math.random());
-      console.log('refresh img');
-    }, 5000);
+      updateimg();
+    }, 10000);
+
+    function updateimg(){
+      var getts_path = 'http://<IP-Address>/getcapturets';
+          getts_path += '?output=jsonp&callback=?';
+
+      $.getJSON(getts_path, {
+
+      }).then(function(data){
+        console.log(data.capts.cap_ts);
+
+        /* Updated image */
+        cap_img.attr('src', './src/img/uploaded_pic/capture.jpg' + '?' + Math.random());
+        cap_ts_p.text('อัพเดท : ' + data.capts.cap_ts);
+        console.log('refresh img');
+
+      });
+    }
 
   </script>
 
