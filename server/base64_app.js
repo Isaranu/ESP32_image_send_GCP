@@ -41,7 +41,7 @@ app.post('/upload', function(req, res) {
 
   var sampleFile = req.files.image;
 
-  sampleFile.mv('/home/isaranu/base64_img_protocol/uploaded_pic/capture.jpg', function(err) {
+  sampleFile.mv('/home/isaranu/base64_img_protocol/html/src/img/uploaded_pic/capture.jpg', function(err) {
     if(err) return console.log(err);
 
       /* Insert data in mongo */
