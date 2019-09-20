@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Display Image from server</title>
+</head>
+
+<body>
+
+  <div><img id="cap_img" style="width:300px;"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <script>
+    var cap_img = $('#cap_img');
+    cap_img.attr('src', './src/img/uploaded_pic/capture.jpg');
+
+    setInterval(function(){
+      /* Updated image */
+      cap_img.attr('src', './src/img/uploaded_pic/capture.jpg' + '?' + Math.random());
+      console.log('refresh img');
+    }, 5000);
+
+  </script>
+
+</body>
+</html>
